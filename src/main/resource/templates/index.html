@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+  <el-container id="app">
+	  <el-header>学校管理系统</el-header>
+	  <el-container>
+	    <el-aside width="200px">
+			<el-menu class="el-menu-vertical-demo" >
+		      <el-menu-item v-for="(res,index) in resSide" :index="index">
+		        <i class="el-icon-setting"></i>
+		        <span slot="title"><a :href="res.resHref">{{res.resName}}</a></span>
+		      </el-menu-item>
+		    </el-menu>
+		</el-aside>
+	    <el-main>
+	    </el-main>
+	  </el-container>
+	</el-container>
+</body>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data:{
+    	  resSide:[],
+    	  url:"http://localhost:8989/res/getAll"
+      },
+      created: function(){
+          this.$http.get(this.url,{//跨域请求数据
+              jsonpCallback:'callbackFunction'//这里是callback
+            }).then(function(res) {//请求成功回调，请求来的数据赋给searchList数组
+            	console.log(res)
+              	this.resSide = res.data;
+            },function(res) {//失败显示状态码
+              	alert(res.status)
+           })
+      },
+	  methods:{
+	  }
+    })
+  </script>
+  <style>
+  	a{
+  		text-decoration: none;
+  	}
+  	.el-header, .el-footer {
+    background-color: #B3C0D1;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+  }
+  
+  .el-aside {
+    background-color: #D3DCE6;
+    color: #333;
+    text-align: center;
+    line-height: 200px;
+  }
+  a{
+  	text-color:#fff;
+  	active-text-color:#ffd04b;
+  	text-decoration: none;
+  }
+  .el-main {
+    background-color: #E9EEF3;
+    color: #333;
+    text-align: center;
+    line-height: 160px;
+  }
+  </style>
+</html>
